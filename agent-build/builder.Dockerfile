@@ -7,5 +7,4 @@ RUN ./rustup-init.sh -y --no-modify-path -c rustfmt --default-toolchain nightly-
 RUN /root/.cargo/bin/rustup target add x86_64-unknown-linux-gnu aarch64-unknown-linux-gnu armv7-unknown-linux-gnueabihf
 
 RUN curl -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3 get-pip.py
-RUN CARGO_NET_GIT_FETCH_WITH_CLI=true python3 -m pip install ziglang
-RUN CARGO_NET_GIT_FETCH_WITH_CLI=true /root/.cargo/bin/cargo install cargo-zigbuild
+RUN CARGO_NET_GIT_FETCH_WITH_CLI=true python3 -m pip install cargo-zigbuild
