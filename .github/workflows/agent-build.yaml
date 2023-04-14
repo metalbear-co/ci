@@ -29,7 +29,6 @@ jobs:
         with:
           context: .
           file: agent-build/builder.Dockerfile
-          # base for armv7 doesn't work on githubaction and isn't really used
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
@@ -59,7 +58,7 @@ jobs:
         with:
           context: .
           file: agent-build/runtime.Dockerfile
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: |
             ghcr.io/metalbear-co/ci-agent-runtime:latest
