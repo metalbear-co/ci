@@ -1,6 +1,6 @@
 FROM buildpack-deps:buster
 
-RUN apt-get update && apt-get install -y gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-x86-64-linux-gnu
+RUN apt-get update && apt-get install -y protobuf-compiler gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-x86-64-linux-gnu
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rustup-init.sh
 RUN chmod +x rustup-init.sh
 RUN ./rustup-init.sh -y -c rustfmt --default-toolchain nightly-2023-03-29
