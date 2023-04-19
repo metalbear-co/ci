@@ -1,16 +1,10 @@
-name: Release agent base images
+name: Release docs base image
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
 jobs:
-  builder:
-    runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
-      
   docs-image:
     runs-on: ubuntu-latest
     permissions:
