@@ -32,7 +32,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/metalbear-co/ci-agent-build:latest
+            ghcr.io/metalbear-co/ci-agent-build:${{ GITHUB_SHA }}
 
   runtime:
     runs-on: ubuntu-latest
