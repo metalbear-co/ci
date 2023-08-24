@@ -1,4 +1,4 @@
-FROM debian:bookworm
+FROM buildpack-deps:bookworm
 
 WORKDIR /tests-runner
 
