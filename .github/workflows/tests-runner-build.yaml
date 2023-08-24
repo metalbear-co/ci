@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  docs-image:
+  test-runner-image:
     runs-on: ubuntu-latest
     permissions:
       packages: write
