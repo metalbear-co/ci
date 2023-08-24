@@ -51,5 +51,4 @@ RUN mv ./kubectl /usr/local/bin
 
 # java
 RUN curl -s "https://get.sdkman.io" | bash
-ENV PATH="$PATH:/root/.sdkman/bin"
-RUN sdk install java 17.0.6-tem
+RUN source "/root/.sdkman/bin/sdkman-init.sh" && sdk install java 17.0.6-tem
