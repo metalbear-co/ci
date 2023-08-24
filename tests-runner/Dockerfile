@@ -2,7 +2,7 @@ FROM buildpack-deps:bookworm
 
 WORKDIR /tests-runner
 
-RUN apt-get update && apt-get install -y protobuf-compiler  gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-x86-64-linux-gnu curl bison npm python3-pip bash bsdmainutils ca-certificates curl gnupg
+RUN apt-get update && apt-get install -y protobuf-compiler gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-x86-64-linux-gnu curl bison npm python3-pip bash bsdmainutils ca-certificates curl gnupg zip
 
 # docker stuff
 RUN install -m 0755 -d /etc/apt/keyrings
