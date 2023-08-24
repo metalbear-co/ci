@@ -29,7 +29,7 @@ RUN rustup target add --toolchain nightly-2023-04-19 aarch64-unknown-linux-gnu x
 # install pip for cargo-zigbuild
 RUN curl -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3 get-pip.py --break-system-packages
 # cargo zigbuild + Python tests dependencies
-RUN CARGO_NET_GIT_FETCH_WITH_CLI=true python3 -m pip --break-system-packages install cargo-zigbuild flask fastapi uvicorn "httptools>=0.5.0" "uvloop>=0.14.0,!=0.15.0,!=0.15.1"
+RUN CARGO_NET_GIT_FETCH_WITH_CLI=true python3 -m pip install --break-system-packages cargo-zigbuild flask fastapi uvicorn "httptools>=0.5.0" "uvloop>=0.14.0,!=0.15.0,!=0.15.1"
 
 # npm dependencies
 RUN npm install express
