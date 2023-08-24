@@ -27,14 +27,12 @@ ENV PATH="$PATH:/root/.cargo/bin"
 RUN rustup target add --toolchain nightly-2023-04-19 aarch64-unknown-linux-gnu x86_64-unknown-linux-gnu x86_64-apple-darwin aarch64-apple-darwin
 
 # install pip for cargo-zigbuild
-RUN curl -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3 get-pip.py
-RUN CARGO_NET_GIT_FETCH_WITH_CLI=true python3 -m pip install cargo-zigbuild
+RUN curl -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3 get-pip.py --break-system-packages
+# cargo zigbuild + Python tests dependencies
+RUN CARGO_NET_GIT_FETCH_WITH_CLI=true python3 -m pip --break-system-packages install cargo-zigbuild flask fastapi uvicorn "httptools>=0.5.0" "uvloop>=0.14.0,!=0.15.0,!=0.15.1"
 
 # npm dependencies
 RUN npm install express
-
-# python dependencies
-RUN pip3 install --break-system-packages flask fastapi uvicorn "httptools>=0.5.0" "uvloop>=0.14.0,!=0.15.0,!=0.15.1"
 
 # gvm for go installations
 RUN curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer | bash
