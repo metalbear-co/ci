@@ -18,9 +18,9 @@ RUN apt-get install -y docker-ce docker-ce-cli containerd.io
 SHELL ["/bin/bash", "-c"]
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rustup-init.sh
 RUN chmod +x rustup-init.sh
-RUN ./rustup-init.sh -y -c rustfmt --default-toolchain nightly-2023-04-19
+RUN ./rustup-init.sh -y -c rustfmt -c clippy --default-toolchain nightly-2023-04-19
 ENV PATH="$PATH:/root/.cargo/bin"
-RUN rustup target add --toolchain nightly-2023-04-19 x86_64-unknown-linux-gnu
+RUN rustup target add --toolchain nightly-2023-04-19 aarch64-unknown-linux-gnu,x86_64-unknown-linux-gnu,x86_64-apple-darwin,aarch64-apple-darwin
 
 RUN npm install express
 
