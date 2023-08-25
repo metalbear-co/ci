@@ -14,8 +14,6 @@ runs:
     - uses: actions/setup-python@v3
     - run: pip3 install flask fastapi uvicorn[standard]
       shell: bash
-    - run: sudo apt-get update && sudo apt-get install -y curl
-      shell: bash
     - uses: actions/setup-go@v3
       with:
         go-version: "1.18.0"
