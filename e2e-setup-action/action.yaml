@@ -1,0 +1,66 @@
+name: 'Setup mirrord e2e environment'
+description: 'Install all required dependencies for mirrord e2e tests'
+inputs:
+  container-runtime:
+    description: 'Container runtime to setup with minikube'
+    default: 'containerd'
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 14
+    - run: npm install express
+      shell: bash
+    - uses: actions/setup-python@v3
+    - run: pip3 install flask fastapi uvicorn[standard]
+      shell: bash
+    - uses: actions/setup-go@v3
+      with:
+        go-version: "1.18"
+        cache-dependency-path: tests/go-e2e/go.sum
+    - run: |
+        go version
+      shell: bash
+    - run: | # Build Go test apps.
+        ./scripts/build_go_apps.sh 18
+      shell: bash
+    - uses: actions/setup-go@v4
+      with:
+        go-version: "1.19"
+        cache-dependency-path: tests/go-e2e/go.sum
+    - run: |
+        go version
+      shell: bash
+    - run: | # Build Go test apps.
+        ./scripts/build_go_apps.sh 19
+      shell: bash
+    - uses: actions/setup-go@v4
+      with:
+        go-version: "1.20"
+        cache-dependency-path: tests/go-e2e/go.sum
+    - run: |
+        go version
+      shell: bash
+    - run: | # Build Go test apps.
+        ./scripts/build_go_apps.sh 20
+      shell: bash
+    - run: |
+        cd tests/rust-e2e-fileops
+        cargo build
+      shell: bash
+    - run: |
+        cd tests/rust-unix-socket-client
+        cargo build
+      shell: bash
+    - run: |
+        cd tests/rust-bypassed-unix-socket
+        cargo build
+      shell: bash
+    # start last thing, to have previous steps faster (no cpu in background)
+    - name: start minikube
+      uses: medyagh/setup-minikube@master
+      with:
+        container-runtime: ${{ inputs.container-runtime }}
+        cpus: 'max'
+        memory: 'max'
