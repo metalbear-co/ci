@@ -18,6 +18,7 @@ runs:
     - uses: actions/setup-go@v3
       with:
         go-version: "1.18"
+        cache-dependency-path: tests/go-e2e/go.sum
     - run: |
         go version
       shell: bash
@@ -27,6 +28,7 @@ runs:
     - uses: actions/setup-go@v4
       with:
         go-version: "1.19"
+        cache-dependency-path: tests/go-e2e/go.sum
     - run: |
         go version
       shell: bash
@@ -36,6 +38,7 @@ runs:
     - uses: actions/setup-go@v4
       with:
         go-version: "1.20"
+        cache-dependency-path: tests/go-e2e/go.sum
     - run: |
         go version
       shell: bash
