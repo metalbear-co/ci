@@ -1,8 +1,18 @@
 name: 'Setup mirrord e2e environment'
 description: 'Install all required dependencies for mirrord e2e tests'
+inputs:
+  container-runtime:
+    description: 'Container runtime to setup with minikube'
+    default: 'containerd'
 runs:
   using: "composite"
   steps:
+    - name: start minikube
+      uses: medyagh/setup-minikube@master
+      with:
+        container-runtime: ${{ inputs.container-runtime }}
+        cpu: 'max'
+        memory: 'max'
     - uses: actions/setup-node@v3
       with:
         node-version: 14
