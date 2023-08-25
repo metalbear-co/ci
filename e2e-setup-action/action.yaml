@@ -3,9 +3,6 @@ description: 'Install all required dependencies for mirrord e2e tests'
 runs:
   using: "composite"
   steps:
-    - uses: actions-rust-lang/setup-rust-toolchain@v1
-      with:
-        components: rustfmt
     - uses: actions/setup-node@v3
       with:
         node-version: 14
