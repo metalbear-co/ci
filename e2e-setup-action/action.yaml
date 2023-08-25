@@ -7,12 +7,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: start minikube
-      uses: medyagh/setup-minikube@master
-      with:
-        container-runtime: ${{ inputs.container-runtime }}
-        cpu: 'max'
-        memory: 'max'
     - uses: actions/setup-node@v3
       with:
         node-version: 14
@@ -60,3 +54,10 @@ runs:
         cd tests/rust-bypassed-unix-socket
         cargo build
       shell: bash
+    # start last thing, to have previous steps faster (no cpu in background)
+    - name: start minikube
+      uses: medyagh/setup-minikube@master
+      with:
+        container-runtime: ${{ inputs.container-runtime }}
+        cpu: 'max'
+        memory: 'max'
