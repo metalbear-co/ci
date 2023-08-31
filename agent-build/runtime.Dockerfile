@@ -3,6 +3,8 @@ FROM debian:stable as builder
 RUN apt update && apt install -y gcc bison flex autoconf automake libtool make pkg-config check g++ git libnfnetlink-dev libmnl-dev libnetfilter-conntrack-dev libnetfilter-cttimeout-dev libnetfilter-cthelper-dev
 WORKDIR /conntrack
 RUN git clone git://git.netfilter.org/conntrack-tools
+# Current master head
+RUN git checkout d417ceaa947c5f7f5d691037d0abe1deca957313
 WORKDIR /conntrack/conntrack-tools
 RUN ./autogen.sh && ./configure && make
 
