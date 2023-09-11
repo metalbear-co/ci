@@ -58,6 +58,10 @@ runs:
         cd tests/rust-bypassed-unix-socket
         cargo build
       shell: bash
+    - run: |
+        cd tests/issue1317
+        cargo build
+      shell: bash
     # start last thing, to have previous steps faster (no cpu in background)
     - name: start minikube
       uses: medyagh/setup-minikube@master
