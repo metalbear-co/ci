@@ -46,21 +46,13 @@ runs:
     - run: | # Build Go test apps.
         ./scripts/build_go_apps.sh 20
       shell: bash
-    - run: |
-        cd tests/rust-e2e-fileops
-        cargo build
-      shell: bash
-    - run: |
-        cd tests/rust-unix-socket-client
-        cargo build
-      shell: bash
-    - run: |
-        cd tests/rust-bypassed-unix-socket
-        cargo build
-      shell: bash
-    - run: |
-        cd tests/issue1317
-        cargo build
+    - run: | # Build Rust test apps.
+        for cargo_dir in $(find tests -name Cargo.toml -printf '%h\n'); do
+            echo "Building test app in: $cargo_dir"
+            pushd "$cargo_dir"
+            cargo build
+            popd
+        done
       shell: bash
     # start last thing, to have previous steps faster (no cpu in background)
     - name: start minikube
