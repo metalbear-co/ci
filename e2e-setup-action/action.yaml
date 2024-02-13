@@ -63,8 +63,9 @@ runs:
     - run: | # Build Go test apps.
         ./scripts/build_go_apps.sh 21
       shell: bash
-    - run: | # Build Rust test apps.
-        for cargo_dir in $(find tests -name Cargo.toml -printf '%h\n'); do
+    - name: Build Rust test apps
+      run: |
+        for cargo_dir in $(find tests/*/* -name Cargo.toml -printf '%h\n'); do
             echo "Building test app in: $cargo_dir"
             pushd "$cargo_dir"
             cargo build
