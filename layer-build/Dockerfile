@@ -3,6 +3,7 @@
 
 FROM ghcr.io/cross-rs/x86_64-unknown-linux-gnu:main-centos
 
+# This fails to compile but tbh shouldn't really change so just stick with old always T_T
 RUN yum update -y && \
     yum install centos-release-scl -y && \
     yum install llvm-toolset-7 -y

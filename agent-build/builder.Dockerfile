@@ -7,5 +7,5 @@ RUN ./rustup-init.sh -y -c rustfmt --default-toolchain nightly-2024-10-11
 ENV PATH="$PATH:/root/.cargo/bin"
 RUN rustup target add --toolchain nightly-2024-10-11 x86_64-unknown-linux-gnu aarch64-unknown-linux-gnu
 
-RUN curl -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3 get-pip.py
+RUN curl -sSL https://bootstrap.pypa.io/pip/3.7/get-pip.py -o get-pip.py && python3 get-pip.py
 RUN CARGO_NET_GIT_FETCH_WITH_CLI=true python3 -m pip install cargo-zigbuild
