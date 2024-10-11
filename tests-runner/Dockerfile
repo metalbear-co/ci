@@ -2,7 +2,7 @@ FROM buildpack-deps:bookworm
 
 WORKDIR /tests-runner
 
-RUN apt-get update && apt-get install -y protobuf-compiler gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-x86-64-linux-gnu curl bison npm python3-pip bash bsdmainutils ca-certificates curl gnupg zip clang
+RUN apt-get update && apt-get install -y python3-pip protobuf-compiler gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-x86-64-linux-gnu curl bison npm python3-pip bash bsdmainutils ca-certificates curl gnupg zip clang
 
 # docker stuff
 RUN install -m 0755 -d /etc/apt/keyrings
@@ -22,13 +22,13 @@ SHELL ["/bin/bash", "-c"]
 # rust stuff
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rustup-init.sh
 RUN chmod +x rustup-init.sh
-RUN ./rustup-init.sh -y -c rustfmt -c clippy --default-toolchain nightly-2024-10-11
+RUN ./rustup-init.sh -y -c rustfmt -c clippy --default-toolchain nightly-2024-04-15
 ENV PATH="/root/.cargo/bin:$PATH"
-RUN rustup target add --toolchain nightly-2024-10-11 aarch64-unknown-linux-gnu x86_64-unknown-linux-gnu x86_64-apple-darwin aarch64-apple-darwin
+RUN rustup target add --toolchain nightly-2024-04-15 aarch64-unknown-linux-gnu x86_64-unknown-linux-gnu x86_64-apple-darwin aarch64-apple-darwin
 
 
 # install pip for cargo-zigbuild
-RUN curl -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3 get-pip.py --break-system-packages
+RUN curl -sSL https://bootstrap.pypa.io/pip/3.7/get-pip.py -o get-pip.py && python3 get-pip.py --break-system-packages
 # cargo zigbuild + Python tests dependencies
 RUN CARGO_NET_GIT_FETCH_WITH_CLI=true python3 -m pip install --break-system-packages cargo-zigbuild flask fastapi uvicorn "httptools>=0.5.0" "uvloop>=0.14.0,!=0.15.0,!=0.15.1"
 
