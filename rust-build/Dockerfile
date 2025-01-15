@@ -3,5 +3,5 @@ FROM buildpack-deps:bookworm as base
 RUN apt-get update && apt-get install -y protobuf-compiler
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rustup-init.sh
 RUN chmod +x rustup-init.sh
-RUN ./rustup-init.sh -y -c rustfmt --default-toolchain nightly-2024-10-11
+RUN ./rustup-init.sh -y -c rustfmt --default-toolchain nightly-2025-01-15
 ENV PATH="$PATH:/root/.cargo/bin"
