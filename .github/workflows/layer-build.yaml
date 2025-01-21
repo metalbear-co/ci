@@ -28,8 +28,17 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: layer-build/Dockerfile
+          file: layer-build/x86_64.Dockerfile
           platforms: linux/amd64
           push: true
           tags: |
             ghcr.io/metalbear-co/ci-layer-build:latest
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: layer-build/aarch64.Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ghcr.io/metalbear-co/ci-layer-build-aarch64:latest
