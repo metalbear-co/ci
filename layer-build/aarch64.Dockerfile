@@ -1,11 +1,23 @@
-# Dockerfile used for building mirrord-layer for x64 with very old libc
+# Dockerfile used for building mirrord-layer for aarch64 with very old libc
 # this to support centos7 or Amazon Linux 2.
 
 FROM ghcr.io/cross-rs/aarch64-unknown-linux-gnu:main-centos
 
-# This fails to compile but tbh shouldn't really change so just stick with old always T_T
+RUN sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/CentOS-*.repo  && \
+    sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/CentOS-*.repo && \
+    sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/CentOS-*.repo
+
+
 RUN yum update -y && \
-    yum install centos-release-scl -y && \
+    yum install centos-release-scl -y
+
+# centos-release-scl adds another repo so need to patch again
+RUN sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/CentOS-*.repo  && \
+    sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/CentOS-*.repo && \
+    sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/CentOS-*.repo
+
+
+RUN yum update -y && \
     yum install llvm-toolset-7 -y
 
 ENV LIBCLANG_PATH=/opt/rh/llvm-toolset-7/root/usr/lib64/ \
