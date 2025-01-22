@@ -33,3 +33,4 @@ jobs:
           push: true
           tags: |
             ghcr.io/metalbear-co/ci-docs-build:latest
+            ghcr.io/metalbear-co/ci-docs-build:${{ github.sha }}
