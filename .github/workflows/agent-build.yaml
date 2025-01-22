@@ -63,3 +63,4 @@ jobs:
           push: true
           tags: |
             ghcr.io/metalbear-co/ci-agent-runtime:latest
+            ghcr.io/metalbear-co/ci-agent-runtime:${{ github.sha }}
