@@ -11,6 +11,7 @@ RUN ./autogen.sh && ./configure && make
 FROM debian:stable as runtime
 
 COPY --from=builder /conntrack/conntrack-tools/src/conntrack /usr/sbin/conntrack
-RUN apt update && apt install -y iptables
+# iproute2 for using ss to flush
+RUN apt update && apt install -y iptables iproute2
 RUN update-alternatives --set iptables /usr/sbin/iptables-legacy \
     && update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
