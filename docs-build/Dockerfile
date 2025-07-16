@@ -1,4 +1,4 @@
-FROM buildpack-deps:buster
+FROM buildpack-deps:bookworm
 
 RUN apt-get update && apt-get install -y protobuf-compiler clang rsync gcc-x86-64-linux-gnu
 
