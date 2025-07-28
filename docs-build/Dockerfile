@@ -4,6 +4,6 @@ RUN apt-get update && apt-get install -y protobuf-compiler clang rsync gcc-x86-6
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rustup-init.sh
 RUN chmod +x rustup-init.sh
-RUN ./rustup-init.sh -y -c rustfmt --default-toolchain nightly-2025-01-22
+RUN ./rustup-init.sh -y -c rustfmt --default-toolchain nightly-2025-07-28
 ENV PATH="$PATH:/root/.cargo/bin"
-RUN rustup target add --toolchain nightly-2025-01-22 x86_64-unknown-linux-gnu
+RUN rustup target add --toolchain nightly-2025-07-28 x86_64-unknown-linux-gnu
