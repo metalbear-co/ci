@@ -22,9 +22,9 @@ SHELL ["/bin/bash", "-c"]
 # rust stuff
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rustup-init.sh
 RUN chmod +x rustup-init.sh
-RUN ./rustup-init.sh -y -c rustfmt -c clippy --default-toolchain nightly-2025-01-22
+RUN ./rustup-init.sh -y -c rustfmt -c clippy --default-toolchain nightly-2025-08-01
 ENV PATH="/root/.cargo/bin:$PATH"
-RUN rustup target add --toolchain nightly-2025-01-22 aarch64-unknown-linux-gnu x86_64-unknown-linux-gnu x86_64-apple-darwin aarch64-apple-darwin
+RUN rustup target add --toolchain nightly-2025-08-01 aarch64-unknown-linux-gnu x86_64-unknown-linux-gnu x86_64-apple-darwin aarch64-apple-darwin
 
 
 # install pip for cargo-zigbuild
