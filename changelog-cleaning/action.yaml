@@ -1,20 +1,3 @@
-# e2e-actions
-#
-# When adding new e2e apps that require compilation (such as a new Rust test app) you have to add
-# the building step here.
-#
-# For Rust apps, we have a little script (see # Build Rust test apps) that loops through the
-# existing directories doing a `cargo build`.
-#
-# Be very careful when adding new build steps, as they have an impact on every other PR in 
-# the `mirrord` repo.
-#
-# If you add a new build step, say to compile a Go program, but the code for this program is only
-# in your PR, then all other PRs will start failing, as they lack yours.
-#
-# The best way to add new build steps here is to either do something similar to what's being done
-# for Rust, or to do it as a conditional build, first checking if the directory/code exists before
-# calling a compiler.
 name: 'Changelog Cleaning'
 description: 'Prints yayayay and checks out a destination repo'
 inputs:
@@ -25,7 +8,10 @@ inputs:
     description: 'Destination repository in owner/repo format'
     required: true
   destination_file_path:
-    description: 'Path to the destination file within the repo'
+    description: 'Relative path to the destination file within the repo'
+    required: true
+  checkout_directory:
+    description: 'Directory to checkout the destination repository'
     required: true
 runs:
   using: "composite"
@@ -34,8 +20,7 @@ runs:
       uses: actions/checkout@v4
       with:
         repository: ${{ inputs.destination_repo }}
-        path: destination_repo
-        token: ${{ github.token }}
+        path: ${{ inputs.checkout_directory }}
     - name: Set up Rust toolchain
       uses: metalbear-co/setup-rust-toolchain@009cda47e1b529982a00627a40eda87b4215035a
     - name: Install rust-script
@@ -43,10 +28,23 @@ runs:
       shell: bash
     - name: Run main.rs with rust-script
       run: |
-        INPUT_LOCAL_FILE_PATH="${{ inputs.local_file_path }}" \
-        INPUT_DESTINATION_REPO="${{ inputs.destination_repo }}" \
-        INPUT_DESTINATION_FILE_PATH="${{ inputs.destination_file_path }}" \
-        rust-script "${{ github.action_path }}/src/main.rs"
+        cat "${{ inputs.local_file_path }}" | \
+        rust-script "${{ github.action_path }}/src/main.rs" > "${{ inputs.checkout_directory }}/${{ inputs.destination_file_path }}"
+      shell: bash
+    - name: Commit to destination repo
+      working-directory: ${{ inputs.checkout_directory }}
+      run: |
+        git config --repo user.email "eyal@metalbear.co"
+        git config --repo user.name "Eyal Bukchin"
+        git add .
+        git commit -m "Update changelog"
+        git push
+      shell: bash
+    - name: Cleanup
+      continue-on-error: true
+      if: ${{ always() }}
+      run: |
+        rm -rf "${{ inputs.checkout_directory }}"
       shell: bash
 branding:
   icon: 'terminal'
