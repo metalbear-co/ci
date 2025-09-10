@@ -21,6 +21,7 @@ runs:
       with:
         repository: ${{ inputs.destination_repo }}
         path: ${{ inputs.checkout_directory }}
+        # token: ${{ secrets.CHANGELOG_GITHUB_PAT }} # TODO: secret access token
     - name: Set up Rust toolchain
       uses: metalbear-co/setup-rust-toolchain@009cda47e1b529982a00627a40eda87b4215035a
     - name: Install rust-script
@@ -29,13 +30,13 @@ runs:
     - name: Run main.rs with rust-script and overwrite destination file
       run: |
         cat "${{ inputs.local_file_path }}" | \
-        rust-script "${{ github.action_path }}/src/main.rs" > "${{ inputs.checkout_directory }}/${{ inputs.destination_file_path }}"
+        rust-script "${{ github.action_path }}/src/main.rs" > "${{ inputs.checkout_directory }}/${{ inputs.destination_file_path }}" && cat "${{ inputs.checkout_directory }}/${{ inputs.destination_file_path }}"
       shell: bash
     - name: Commit to destination repo
       working-directory: ${{ inputs.checkout_directory }}
       run: |
-        git config --repo user.email "eyal@metalbear.co"
-        git config --repo user.name "Eyal Bukchin"
+        git config --local user.email "eyal@metalbear.co"
+        git config --local user.name "Eyal Bukchin"
         git add .
         git commit -m "Update changelog"
         git push
