@@ -13,6 +13,15 @@ inputs:
   checkout_directory:
     description: 'Directory into which the destination repository can be checked out'
     required: true
+  git_user:
+    description: 'Username for the git commit'
+    required: true
+  git_email:
+    description: 'Email address for the git commit'
+    required: true
+  git_access_token:
+    description: 'Access token for the git commit'
+    required: true
 runs:
   using: "composite"
   steps:
@@ -21,6 +30,7 @@ runs:
       with:
         repository: ${{ inputs.destination_repo }}
         path: ${{ inputs.checkout_directory }}
+        token: ${{ inputs.git_access_token }}
     - name: Set up Rust toolchain
       uses: metalbear-co/setup-rust-toolchain@009cda47e1b529982a00627a40eda87b4215035a
     - name: Install rust-script
@@ -34,8 +44,8 @@ runs:
     - name: Commit to destination repo
       working-directory: ${{ inputs.checkout_directory }}
       run: |
-        git config --repo user.email "eyal@metalbear.co"
-        git config --repo user.name "Eyal Bukchin"
+        git config --local user.email "${{ inputs.git_email }}"
+        git config --local user.name "${{ inputs.git_user }}"
         git add .
         git commit -m "Update changelog"
         git push
