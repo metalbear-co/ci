@@ -6,7 +6,7 @@ RUN git clone git://git.netfilter.org/conntrack-tools
 # Current master head
 WORKDIR /conntrack/conntrack-tools
 RUN git checkout d417ceaa947c5f7f5d691037d0abe1deca957313
-RUN ./autogen.sh && ./configure && make
+RUN ./autogen.sh && ./configure && make -j$(nproc)
 
 FROM debian:stable as runtime
 
