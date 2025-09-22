@@ -57,7 +57,7 @@ jobs:
       - name: Set Docker tags
         uses: ./.github/actions/set-image-tags
         with:
-          image-name: ci-agent-runtime
+          base-name: ci-agent-runtime
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
