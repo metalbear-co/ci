@@ -56,6 +56,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Set Docker tags
         uses: ./.github/actions/set-image-tags
+        id: set-tags
         with:
           base-name: ci-agent-runtime
       - name: Build and push
