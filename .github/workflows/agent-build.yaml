@@ -61,4 +61,6 @@ jobs:
           file: agent-build/runtime.Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: 'ghcr.io/metalbear-co/ci-agent-runtime-staging-distroless:${{ github.sha }}'
+          tags: |
+            ghcr.io/metalbear-co/ci-agent-runtime:latest
+            ghcr.io/metalbear-co/ci-agent-runtime:${{ github.sha }}
