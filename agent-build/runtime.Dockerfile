@@ -19,7 +19,6 @@ RUN apt update && apt install -y iptables iproute2
 COPY agent-build/collect-deps.sh /collect-deps.sh
 RUN /collect-deps.sh
 
-# A really minimal and lightweight set of coreutils.
 FROM scratch
 
 COPY --from=builder /deps/ /
