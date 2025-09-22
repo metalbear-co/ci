@@ -24,6 +24,12 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set Docker tags
+        uses: ./.github/actions/set-image-tags
+        id: set-tags
+        with:
+          base-name: ci-layer-build
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -31,9 +37,13 @@ jobs:
           file: layer-build/x86_64.Dockerfile
           platforms: linux/amd64
           push: true
-          tags: |
-            ghcr.io/metalbear-co/ci-layer-build:latest
-            ghcr.io/metalbear-co/ci-layer-build:${{ github.sha }}
+          tags: ${{ steps.set-tags.outputs.tags }}
+
+      - name: Set aarch64 Docker tags
+        uses: ./.github/actions/set-image-tags
+        id: set-tags-aarch64
+        with:
+          base-name: ci-layer-build-aarch64
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -41,6 +51,4 @@ jobs:
           file: layer-build/aarch64.Dockerfile
           platforms: linux/amd64
           push: true
-          tags: |
-            ghcr.io/metalbear-co/ci-layer-build-aarch64:latest
-            ghcr.io/metalbear-co/ci-layer-build-aarch64:${{ github.sha }}
+          tags: ${{ steps.set-tags-aarch64.outputs.tags }}
