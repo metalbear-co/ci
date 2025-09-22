@@ -27,8 +27,11 @@ for bin in $BINARIES; do
 	done
 done
 
+
+DEB_HOST_MULTIARCH=$(dpkg-architecture -q DEB_HOST_MULTIARCH)
+
 # Copy iptables dynamic modules
-cp -r --parents /usr/lib/x86_64-linux-gnu/xtables/ "$DEST/"
+cp -r --parents /usr/lib/$DEB_HOST_MULTIARCH/xtables/ "$DEST/"
 
 # Create iptables lock file
 mkdir "$DEST/run/"
@@ -45,11 +48,11 @@ touch "$DEST/run/xtables.lock"
 # linked dependencies is essentailly fixed.
 
 cp --parents \
-   /usr/lib/x86_64-linux-gnu/libm.so.6 \
-   /usr/lib/x86_64-linux-gnu/libpthread.so.0 \
-   /usr/lib/x86_64-linux-gnu/libdl.so.2 \
+   /usr/lib/$DEB_HOST_MULTIARCH/libm.so.6 \
+   /usr/lib/$DEB_HOST_MULTIARCH/libpthread.so.0 \
+   /usr/lib/$DEB_HOST_MULTIARCH/libdl.so.2 \
    "$DEST/"
 
 
 # Copy the dynamic linker
-cp --parents /lib64/ld-linux-x86-64.so.2 "$DEST/"
+cp --parents $(ldd /bin/sh | awk '/ld-linux|ld\.so/{print $1}') "$DEST/"

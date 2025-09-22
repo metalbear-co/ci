@@ -11,7 +11,9 @@ RUN ./autogen.sh && ./configure && make -j$(nproc)
 RUN cp ./src/conntrack /usr/sbin/conntrack
 
 # iproute2 for using ss to flush
-RUN apt update && apt install -y iptables iproute2
+# dpkg-dev for dpkg-architecture, used by collect-deps to find
+# the correct arch-specific files
+RUN apt update && apt install -y iptables iproute2 dpkg-dev
 # RUN update-alternatives --set iptables /usr/sbin/iptables-legacy \
 #     && update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
 
