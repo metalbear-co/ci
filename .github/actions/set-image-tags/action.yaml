@@ -20,3 +20,7 @@ runs:
         else
           echo "tags=ghcr.io/metalbear-co/${{ inputs.base-name }}:latest,ghcr.io/metalbear-co/${{ inputs.base-name }}:${{ github.sha }}" >> $GITHUB_OUTPUT
         fi
+    - name: Print Docker tags
+      shell: bash
+      run: |
+        echo "Calculated tags: ${{ steps.set-tags.outputs.tags }}"
