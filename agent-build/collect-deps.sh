@@ -13,6 +13,7 @@ $(which iptables-legacy)
 $(which ip6tables-legacy)
 $(which ss)
 $(which conntrack)
+$(which sleep)
 "
 
 DEST=/deps
