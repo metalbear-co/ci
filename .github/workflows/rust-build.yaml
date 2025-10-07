@@ -24,6 +24,11 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set Docker tags
+        uses: ./.github/actions/set-image-tags
+        id: set-tags
+        with:
+          base-name: ci-rust-build
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -31,6 +36,4 @@ jobs:
           file: rust-build/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: |
-            ghcr.io/metalbear-co/ci-rust-build:latest
-            ghcr.io/metalbear-co/ci-rust-build:${{ github.sha }}
+          tags: ${{ steps.set-tags.outputs.tags }}
