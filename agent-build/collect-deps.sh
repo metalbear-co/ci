@@ -14,6 +14,7 @@ $(which ip6tables-legacy)
 $(which ss)
 $(which conntrack)
 $(which sleep)
+$(which cat)
 "
 
 DEST=/deps
