@@ -21,6 +21,18 @@ inputs:
   container-runtime:
     description: 'Container runtime to setup with minikube'
     default: 'containerd'
+  sccache-gcs-bucket:
+    description: 'GCS bucket for sccache (optional)'
+    required: false
+    default: ''
+  sccache-gcp-credentials:
+    description: 'GCP credentials for sccache (optional)'
+    required: false
+    default: ''
+  sccache-key-prefix:
+    description: 'sccache key prefix (optional)'
+    required: false
+    default: 'e2e-setup'
 runs:
   using: "composite"
   steps:
@@ -63,6 +75,27 @@ runs:
     - run: | # Build Go test apps.
         ./scripts/build_go_apps.sh 25
       shell: bash
+    - name: Setup sccache for Rust builds
+      if: ${{ inputs.sccache-gcs-bucket != '' && inputs.sccache-gcp-credentials != '' }}
+      run: |
+        # Install sccache
+        SCCACHE_VERSION=0.12.0
+        curl -fsSL https://github.com/mozilla/sccache/releases/download/v${SCCACHE_VERSION}/sccache-v${SCCACHE_VERSION}-x86_64-unknown-linux-musl.tar.gz \
+          | tar -xzv --strip-components=1 -C /usr/local/bin sccache-v${SCCACHE_VERSION}-x86_64-unknown-linux-musl/sccache
+        chmod +x /usr/local/bin/sccache
+        sccache --version
+        
+        # Setup GCP credentials
+        echo "${{ inputs.sccache-gcp-credentials }}" > /tmp/gcp-sccache-credentials.json
+        
+        # Configure sccache environment
+        echo "SCCACHE_GCS_BUCKET=${{ inputs.sccache-gcs-bucket }}" >> $GITHUB_ENV
+        echo "SCCACHE_GCS_KEY_PATH=/tmp/gcp-sccache-credentials.json" >> $GITHUB_ENV
+        echo "SCCACHE_GCS_KEY_PREFIX=${{ inputs.sccache-key-prefix }}" >> $GITHUB_ENV
+        echo "SCCACHE_GCS_RW_MODE=READ_WRITE" >> $GITHUB_ENV
+        echo "RUSTC_WRAPPER=/usr/local/bin/sccache" >> $GITHUB_ENV
+        echo "::notice::sccache configured for e2e-setup-action"
+      shell: bash
     - name: Build Rust test apps
       run: |
         for cargo_dir in $(find tests/*/* -name Cargo.toml -printf '%h\n'); do
@@ -71,6 +104,13 @@ runs:
             cargo build
             popd
         done
+      shell: bash
+    - name: Show sccache stats
+      if: ${{ inputs.sccache-gcs-bucket != '' && inputs.sccache-gcp-credentials != '' }}
+      run: |
+        if command -v sccache &> /dev/null; then
+          sccache --show-stats
+        fi
       shell: bash
     - name: Build C test apps
       run: ./scripts/build_c_apps.sh
