@@ -75,6 +75,16 @@ runs:
     - run: | # Build Go test apps.
         ./scripts/build_go_apps.sh 25
       shell: bash
+    - uses: actions/setup-go@v4
+      with:
+        go-version: "1.26"
+        cache: false
+    - run: |
+        go version
+      shell: bash
+    - run: | # Build Go test apps.
+        ./scripts/build_go_apps.sh 26
+      shell: bash
     - name: Setup sccache for Rust builds
       if: ${{ inputs.sccache-gcs-bucket != '' && inputs.sccache-gcp-credentials != '' }}
       run: |
